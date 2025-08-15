@@ -1,0 +1,33 @@
+# --- Delivery & Schedule ---
+digest_time: "08:30"
+timezone: "Europe/London"
+digest_count_target: 7
+
+# --- Gates & Windows ---
+alert_threshold: 75
+novelty_window_days: 14
+dedupe_window_hours: 24
+judge_min_score: 80
+
+# --- LLM runtime ---
+llm_temperature: 0.2
+timeout_seconds: 30
+
+# --- Scoring Weights ---
+base_weights:
+  Earnings: 50
+  Guidance: 65
+  "M&A": 70
+  Financing: 45
+  Exec: 35
+  Legal-Reg: 55
+  Product-Customer: 40
+  Macro: 35
+
+bonuses:
+  numbers_present: 10
+  named_counterparty: 8
+  novel: 6
+  importance3: 5
+  first_party: 4
+  rumour_penalty: -8
