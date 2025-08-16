@@ -13,9 +13,16 @@
   enabled: true
   fetch_limit: 20
 
-- name: "Reuters Business"
+- name: "MarketWatch Top Stories"
   type: "wire"
   region: "US"
-  url: "https://feeds.reuters.com/reuters/businessNews"
+  url: "https://www.marketwatch.com/rss/topstories"
+  enabled: true
+  fetch_limit: 20
+
+- name: "AP Business"
+  type: "wire"
+  region: "US"
+  url: "https://apnews.com/hub/apf-business?utm_source=apnews.com&utm_medium=referral&utm_campaign=ap-rss"
   enabled: true
   fetch_limit: 20

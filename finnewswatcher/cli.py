@@ -17,7 +17,7 @@ def parse_args():
     parser.add_argument("--types", type=str, default="rns", help="Comma-separated list of source types to pull: rns,press,wire,filing")
     parser.add_argument("--max-items", type=int, default=20, help="Max number of items to print overall (after sorting)")
     parser.add_argument("--per-source", type=int, default=0, help="Number of entries to read per source")
-    parser.add_argument("--sources", type=int, default=1, help="Number of sources to pull (0 = all)")
+    parser.add_argument("--sources", type=int, default=0, help="Number of sources to pull (0 = all)")
     parser.add_argument("--verbose", action="store_true", help="When set, print URL and snippet lines")
 
     ns = parser.parse_args()

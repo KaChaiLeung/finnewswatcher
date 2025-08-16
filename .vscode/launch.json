@@ -1,0 +1,35 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "FinNewsWatcher: wire quick run",
+      "type": "python",
+      "request": "launch",
+      "module": "finnewswatcher.cli",
+      "args": ["--types", "wire", "--sources", "1", "--per-source", "20", "--max-items", "10", "--verbose"],
+      "cwd": "${workspaceFolder}",
+      "console": "internalConsole",
+      "justMyCode": true
+    },
+    {
+      "name": "FinNewsWatcher: all wires",
+      "type": "python",
+      "request": "launch",
+      "module": "finnewswatcher.cli",
+      "args": ["--types", "wire", "--sources", "0", "--per-source", "20", "--max-items", "20"],
+      "cwd": "${workspaceFolder}",
+      "console": "internalConsole",
+      "justMyCode": true
+    },
+    {
+      "name": "FinNewsWatcher: RNS (debug)",
+      "type": "python",
+      "request": "launch",
+      "module": "finnewswatcher.cli",
+      "args": ["--types", "rns", "--sources", "1", "--per-source", "50", "--max-items", "20", "--verbose"],
+      "cwd": "${workspaceFolder}",
+      "console": "internalConsole",
+      "justMyCode": true
+    }
+  ]
+}
