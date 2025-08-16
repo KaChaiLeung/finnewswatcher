@@ -1,0 +1,21 @@
+- name: "Investegate RNS"
+  type: "rns" # one of: rns | press | wire | filing
+  region: "UK"
+  url: "https://www.investegate.co.uk/Index.aspx?format=rss"
+  enabled: true # optional (default true)
+  fetch_limit: 20 # optional
+  notes: "Primary UK RNS feed"
+
+- name: "BBC Business"
+  type: "wire"
+  region: "UK"
+  url: "https://feeds.bbci.co.uk/news/business/rss.xml"
+  enabled: true
+  fetch_limit: 20
+
+- name: "Reuters Business"
+  type: "wire"
+  region: "US"
+  url: "https://feeds.reuters.com/reuters/businessNews"
+  enabled: true
+  fetch_limit: 20
