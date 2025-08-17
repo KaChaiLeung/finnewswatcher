@@ -1,8 +1,7 @@
 from pathlib import Path
-from typing import Any, get_args, List, Literal, Optional
+from typing import Any, get_args, Literal, Optional, Dict, List
 from yaml import safe_load
-from pydantic import BaseModel, Field, model_validator, HttpUrl
-from typing import Dict
+from pydantic import BaseModel, Field, model_validator, HttpUrl, field_validator
 
 from finnewswatcher.models import EventClass
 
@@ -102,6 +101,7 @@ def load_yaml(path: Path) -> Any:
 
     return data
 
+
 # --- Load thresholds from configs/thresholds.yaml ---
 def load_thresholds() -> Thresholds:
     cfg_path = _project_root() / "configs" / "thresholds.yaml"
@@ -132,3 +132,80 @@ def load_sources() -> List[SourceConfig]:
     enabled_sources = [s for s in sources if s.enabled]
     
     return enabled_sources
+
+
+# --- Watchlist Entry Model ---
+class WatchlistEntry(BaseModel):
+    name: str
+    ticker: str
+    primary_exchange: str
+    region: str
+    sector: Optional[str] = None
+    aliases: List[str] = Field(default_factory=list)
+    importance: int = 2
+    notes: Optional[str] = None
+
+    @field_validator("ticker", mode="before")
+    def normalize_ticker(cls, v:str) -> str:
+        if v is None:
+            raise ValueError("ticker is required")
+        s = str(v).strip().upper()
+        if not s:
+            raise ValueError("ticker cannot be empty")
+        if "." in s:
+            raise ValueError("ticker must not contain '.' (put exchance suffix in aliases)")
+        return s
+    
+    @field_validator("aliases", mode="before")
+    def normalize_aliases(cls, v):
+        if v is None:
+            return []
+        if isinstance(v, str):
+            items = [v]
+        else:
+            try:
+                items = list(v)
+            except TypeError:
+                raise ValueError("aliases must be a string or a list of strings")
+            
+        cleaned = []
+        seen_lower = set()
+        for a in items:
+            s = str(a).strip()
+            if not s:
+                continue
+            key=s.lower()
+            if key in seen_lower:
+                continue
+            seen_lower.add(key)
+            cleaned.append(s)
+        return cleaned
+    
+    @field_validator("importance", mode="after")
+    def validate_importance(cls, v:int) -> int:
+        if v not in (1, 2, 3):
+            raise ValueError("importance must be 1, 2, or 3")
+        return v
+    
+    @field_validator("name", "primary_exchange", "region", "sector", mode="before")
+    def trim_strings(cls, v):
+        if v is None:
+            return v
+        s = str(v).strip()
+        return s or None
+    
+
+def load_watchlist() -> List[WatchlistEntry]:
+    path = _project_root() / "configs" / "watchlist.yaml"
+    data = load_yaml(path)
+
+    if not isinstance(data, list):
+        raise TypeError("watchlist.yaml must be a list of mappings")
+
+    entries: List[WatchlistEntry] = []
+    for i, row in enumerate(data):
+        if not isinstance(row, dict):
+            raise TypeError(f"watchlist[{i}] is not a mapping (got {type(row).__name__})")
+        entries.append(WatchlistEntry(**row))
+
+    return entries

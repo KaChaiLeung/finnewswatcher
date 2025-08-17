@@ -3,7 +3,7 @@
   "configurations": [
     {
       "name": "FinNewsWatcher: wire quick run",
-      "type": "python",
+      "type": "debugpy",
       "request": "launch",
       "module": "finnewswatcher.cli",
       "args": ["--types", "wire", "--sources", "1", "--per-source", "20", "--max-items", "10", "--verbose"],
@@ -13,7 +13,7 @@
     },
     {
       "name": "FinNewsWatcher: all wires",
-      "type": "python",
+      "type": "debugpy",
       "request": "launch",
       "module": "finnewswatcher.cli",
       "args": ["--types", "wire", "--sources", "0", "--per-source", "20", "--max-items", "20"],
@@ -23,7 +23,7 @@
     },
     {
       "name": "FinNewsWatcher: RNS (debug)",
-      "type": "python",
+      "type": "debugpy",
       "request": "launch",
       "module": "finnewswatcher.cli",
       "args": ["--types", "rns", "--sources", "1", "--per-source", "50", "--max-items", "20", "--verbose"],

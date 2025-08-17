@@ -3,25 +3,26 @@
   primary_exchange: "NYSE"
   region: "US"
   sector: "Information Technology"
-  aliases: ["IBM", "IBM Corp", "International Business Machines", "IBM.N"]
+  aliases:
+    ["IBM", "IBM Corp", "International Business Machines", "IBM.N", "IBM US"]
   importance: 3
-  notes: "Legacy IT + hybrid cloud/AI"
+  notes: "Hybrid cloud + AI"
 
-- name: "NVIDIA"
+- name: "NVIDIA Corporation"
   ticker: "NVDA"
   primary_exchange: "NASDAQ"
   region: "US"
   sector: "Semiconductors"
-  aliases: ["NVIDIA", "Nvidia", "NVDA", "NVIDIA Corporation", "NVDA.O"]
+  aliases: ["NVIDIA", "Nvidia", "NVDA", "NVIDIA Corp", "NVDA.O"]
   importance: 3
-  notes: "AI GPUs, data center"
+  notes: "AI GPUs / data center"
 
-- name: "Apple"
+- name: "Apple Inc."
   ticker: "AAPL"
   primary_exchange: "NASDAQ"
   region: "US"
   sector: "Consumer Electronics"
-  aliases: ["Apple Inc", "AAPL", "AAPL.O"]
+  aliases: ["Apple Inc", "AAPL", "AAPL.O", "Apple Incorporated"]
   importance: 3
   notes: "Avoid plain 'Apple' alias to reduce false positives"
 
@@ -32,4 +33,4 @@
   sector: "Software"
   aliases: ["Palantir", "Palantir Technologies", "PLTR", "PLTR.N"]
   importance: 3
-  notes: "Data platforms; gov + commercial"
+  notes: "Gov + commercial data platforms"

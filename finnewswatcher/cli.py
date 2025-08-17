@@ -4,7 +4,7 @@ import sys
 
 from finnewswatcher.config import load_sources
 from finnewswatcher.fetchers.rss import pull_feed
-from finnewswatcher.models import NormalizedItem, SourceType
+from finnewswatcher.models import SourceType
 from typing import get_args
 
 
@@ -27,7 +27,7 @@ def parse_args():
     invalid = [t for t in types if t not in ALLOWED_TYPES]
 
     if invalid:
-        parser.error(f"Invalid --types {invalid}; valid: {", ".join(sorted(ALLOWED_TYPES))}")
+        parser.error(f"Invalid --types {invalid}; valid: {', '.join(sorted(ALLOWED_TYPES))}")
 
     if not types:
         types = ["rns"]
@@ -54,15 +54,15 @@ def main():
         sources = sources[:opts.sources]
 
     if not sources:
-        print(f"No enabled sources match types: {", ".join(opts.types)}."
-              f"Check configs/sources.yaml or --types.")
+        print(f"No enabled sources match types: {', '.join(opts.types)}. "
+            "Check configs/sources.yaml or --types.")
         sys.exit(1)
     
     all_items = []
     
     for s in sources:
         limit = opts.per_source if opts.per_source > 0 else s.fetch_limit
-        items = pull_feed(s)
+        items = pull_feed(s, limit=limit)
         all_items.extend(items)
         print(f"{s.name}: {len(items)} items")
     
@@ -73,15 +73,17 @@ def main():
     filtered_items = sorted(all_items, key=lambda it: it.published_at, reverse=True)[:opts.max_items]
 
     now_utc = datetime.now(timezone.utc).isoformat()
-    
-    print(f"FinNewsWatcher CLI — {now_utc}"
-          f"Sources: {len(sources)} | Types: {",".join(opts.types)} | Items: {len(all_items)}")
+    print(
+        f"FinNewsWatcher CLI — {now_utc}\n"
+        f"Sources: {len(sources)} | Types: {', '.join(opts.types)} | Items: {len(all_items)}"
+        )
 
     for item in filtered_items:
         print(f"{item.published_at.isoformat()} | [{item.source_type}] {item.headline} ({item.source_name})")
-    
-    if opts.verbose:
-        print(f"{item.url}\n{item.body_snippet[:200]}")
+        if opts.verbose:
+            print(item.url)
+            if item.body_snippet:
+                print(item.body_snippet[:200])
 
     return None
 
