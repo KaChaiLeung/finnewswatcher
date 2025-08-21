@@ -1,0 +1,367 @@
+# Classifier rules for FinNewsWatcher
+# - headline_weight, snippet_weight: scoring weights
+# - min_total_hits, min_headline_hits: classification thresholds
+# - disqualify_if_negative: if any negative keyword (global or class-level) hits, skip that class
+# - negative_keywords_global: applied for all classes
+# - priority_order: tie-breaker order (earlier wins)
+# - classes: per-class keyword lists (all lowercase; exact/word-boundary matching happens in code)
+
+# --- Scoring knobs ---
+headline_weight: 2
+snippet_weight: 1
+min_total_hits: 1
+min_headline_hits: 0
+disqualify_if_negative: true
+
+# --- Global negatives (filter out opinion/thinkpieces etc.) ---
+negative_keywords_global:
+  - opinion
+  - column
+  - explainer
+  - newsletter
+  - podcast
+  - interview
+  - q&a
+  - guest post
+  - live blog
+  - live updates
+  - recap
+  - roundup
+  - analysis
+  - rumor
+  - rumours
+  - reportedly
+  - speculation
+  - speculative
+  - preview
+
+# --- Tie-break priority (earlier wins on ties) ---
+priority_order:
+  - "M&A"
+  - "Guidance"
+  - "Earnings"
+  - "Legal-Reg"
+  - "Financing"
+  - "Exec"
+  - "Product-Customer"
+  - "Macro"
+
+# --- Per-class rules ---
+classes:
+  "M&A":
+    headline_keywords:
+      - acquire
+      - acquisition
+      - to acquire
+      - buys
+      - buy
+      - takeover
+      - take over
+      - merger
+      - combine
+      - combination
+      - merge
+      - stake
+      - strategic investment
+      - invests in
+      - bid
+      - offer
+      - approaches
+      - spinoff
+      - spin off
+      - split-off
+      - divest
+      - divestiture
+      - sell unit
+      - sells unit
+    snippet_keywords:
+      - definitive agreement
+      - terms undisclosed
+      - purchase price
+      - consideration
+      - cash-and-stock
+      - tender offer
+      - shareholder approval
+      - antitrust clearance
+    negative_keywords: []
+
+  "Guidance":
+    headline_keywords:
+      - guidance
+      - outlook
+      - forecast
+      - sees
+      - expects
+      - targets
+      - profit warning
+      - warns
+      - raises outlook
+      - cuts outlook
+      - lowers outlook
+      - hikes outlook
+      - trims outlook
+      - preliminary outlook
+    snippet_keywords:
+      - full-year guidance
+      - fy guidance
+      - q1 guidance
+      - q2 guidance
+      - q3 guidance
+      - q4 guidance
+      - revenue outlook
+      - eps outlook
+      - margin outlook
+      - prelim results
+      - preannouncement
+      - pre-announcement
+    negative_keywords: []
+
+  "Earnings":
+    headline_keywords:
+      - earnings
+      - results
+      - quarterly results
+      - eps
+      - profit
+      - loss
+      - sales
+      - revenue
+      - misses
+      - miss
+      - beats
+      - beat
+    snippet_keywords:
+      - adjusted eps
+      - non-gaap
+      - gaap
+      - ebitda
+      - gross margin
+      - operating margin
+      - guidance raised
+      - guidance lowered
+      - comparable sales
+      - same-store sales
+      - comp sales
+      - sss
+      - net income
+      - outlook
+    negative_keywords: []
+
+  "Legal-Reg":
+    headline_keywords:
+      - lawsuit
+      - sues
+      - sued
+      - litigation
+      - settlement
+      - settles
+      - fined
+      - fine
+      - penalty
+      - probe
+      - investigation
+      - antitrust
+      - monopoly
+      - regulator
+      - regulatory
+      - ban
+      - banned
+      - injunction
+      - complaint
+      - charges
+      - indicts
+      - indictment
+      - recall
+      - data breach
+      - cyberattack
+    snippet_keywords:
+      - class action
+      - consent decree
+      - consent order
+      - cma
+      - fca
+      - ofcom
+      - asa
+      - sec
+      - ftc
+      - doj
+      - eu commission
+      - gdpr
+      - privacy
+      - settlement talks
+      - fines
+    negative_keywords: []
+
+  "Financing":
+    headline_keywords:
+      - dividend
+      - buyback
+      - repurchase
+      - authorizes buyback
+      - offering
+      - share offering
+      - stock offering
+      - equity offering
+      - follow-on
+      - placement
+      - placing
+      - rights issue
+      - convertible
+      - notes
+      - bond
+      - bonds
+      - debt
+      - loan
+      - credit facility
+      - revolver
+      - refinancing
+      - ipo
+      - secondary offering
+      - at-the-market
+      - atm program
+    snippet_keywords:
+      - authorizes repurchase
+      - declares dividend
+      - increases dividend
+      - special dividend
+      - pricing of offering
+      - priced at
+      - coupon
+      - maturity
+      - proceeds
+      - uses of proceeds
+      - leverage
+      - covenant
+      - interest rate
+    negative_keywords: []
+
+  "Exec":
+    headline_keywords:
+      - ceo
+      - cfo
+      - coo
+      - cto
+      - cmo
+      - chro
+      - chair
+      - chairman
+      - chairwoman
+      - board
+      - director
+      - appoints
+      - appointed
+      - names
+      - promotes
+      - promotion
+      - resigns
+      - steps down
+      - to step down
+      - retires
+      - retirement
+      - fired
+      - ousted
+      - departs
+      - leaves
+      - succession
+    snippet_keywords:
+      - interim ceo
+      - interim cfo
+      - joins from
+      - previously at
+      - effective immediately
+      - effective date
+      - board seat
+      - board changes
+    negative_keywords:
+      - former ceo
+      - ex-ceo
+      - former cfo
+      - ex-cfo
+      - interview
+      - profile
+
+  "Product-Customer":
+    headline_keywords:
+      - launches
+      - launch
+      - unveils
+      - introduces
+      - announces product
+      - product launch
+      - partnership
+      - partners with
+      - collaborates with
+      - collaboration
+      - wins contract
+      - secures contract
+      - contract award
+      - awarded contract
+      - order
+      - purchase order
+      - customer win
+      - client win
+      - rollout
+      - deploys
+      - trial
+      - pilot
+      - recall
+      - fda approval
+      - approval
+      - clearance
+      - ce mark
+      - certification
+    snippet_keywords:
+      - general availability
+      - ga
+      - pricing
+      - feature
+      - integration
+      - distribution agreement
+      - reseller
+      - oem
+      - channel partner
+      - clinical trial
+      - phase 2
+      - phase 3
+      - 510(k)
+    negative_keywords: []
+
+  "Macro":
+    headline_keywords:
+      - inflation
+      - cpi
+      - ppi
+      - jobs report
+      - payrolls
+      - unemployment
+      - gdp
+      - retail sales
+      - pmi
+      - ism
+      - rate hike
+      - rate cut
+      - interest rates
+      - fed
+      - fomc
+      - ecb
+      - boe
+      - bank of england
+      - jackson hole
+      - tariffs
+      - trade war
+      - sanctions
+      - budget
+      - deficit
+      - election
+    snippet_keywords:
+      - central bank
+      - monetary policy
+      - dot plot
+      - guidance
+      - inflation print
+      - headline inflation
+      - core inflation
+      - shelter
+      - energy prices
+      - wages
+    negative_keywords: []

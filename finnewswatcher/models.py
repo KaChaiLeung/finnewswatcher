@@ -1,11 +1,12 @@
 from __future__ import annotations
+
 from datetime import datetime, timezone
 from typing import Literal, List, Optional, Dict
 from pydantic import BaseModel, HttpUrl, Field, field_validator
 
 
 SourceType = Literal["rns", "filing", "press", "wire"]
-EventClass = Literal["Earnings", "Guidance", "M&A", "Financing", "Exec", "Legal-Reg", "Product-Customer", "Macro"]
+EventClass = Literal["M&A", "Guidance", "Earnings", "Legal-Reg", "Financing", "Exec", "Product-Customer", "Macro"]
 
 
 class NormalizedItem(BaseModel):
@@ -43,3 +44,21 @@ class NormalizedItem(BaseModel):
         if v.tzinfo is None:
             return v.replace(tzinfo=timezone.utc)
         return v.astimezone(timezone.utc)
+    
+    # De-dupe + normalize tickers (Optional but handy)
+    @field_validator("tickers", mode="after")
+    def dedupe_tickers(cls, v: List[str]) -> List[str]:
+        # Normalize to upper, unique, stable order
+        seen = set()
+        out = []
+        for t in v or []:
+            u = (t or "").strip().upper()
+            if u and u not in seen:
+                seen.add(u)
+                out.append(u)
+        return out
+
+    @property
+    def text(self) -> str:
+        """Convenience: headline + snippet with single-spacing."""
+        return " ".join(f"{self.headline} {self.body_snippet}".split()).strip()

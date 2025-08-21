@@ -34,3 +34,15 @@
   aliases: ["Palantir", "Palantir Technologies", "PLTR", "PLTR.N"]
   importance: 3
   notes: "Gov + commercial data platforms"
+
+- name: "Intel Corporation"
+  ticker: "INTC"
+  primary_exchange: "NASDAQ"
+  region: "US"
+  aliases: ["Intel", "INTC", "Intel Corp"]
+
+- name: "Walmart Inc."
+  ticker: "WMT"
+  primary_exchange: "NYSE"
+  region: "US"
+  aliases: ["Walmart", "Wal-Mart", "WMT"]

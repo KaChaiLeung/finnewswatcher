@@ -1,9 +1,10 @@
 from pathlib import Path
 from typing import Any, get_args, Literal, Optional, Dict, List
 from yaml import safe_load
-from pydantic import BaseModel, Field, model_validator, HttpUrl, field_validator
+from pydantic import BaseModel, Field, model_validator, HttpUrl, field_validator, ValidationError
 
 from finnewswatcher.models import EventClass
+from finnewswatcher.classifier.rules import Ruleset
 
 
 # --- Bonuses Submodel ---
@@ -209,3 +210,18 @@ def load_watchlist() -> List[WatchlistEntry]:
         entries.append(WatchlistEntry(**row))
 
     return entries
+
+
+def load_classifier_ruleset(path: str | Path | None = None) -> Ruleset:
+    p = Path(path) if path is not None else (_project_root() / "configs" / "classifier.yaml")
+    if not p.exists():
+        raise FileNotFoundError(f"classifier.yaml not found at: {p}")
+
+    data = load_yaml(p)  # your existing helper returning a dict
+
+    try:
+        return Ruleset.model_validate(data)
+        # (equivalent) return Ruleset(**data)
+    except ValidationError as e:
+        # Re-raise with a concise, readable message
+        raise ValueError(f"Invalid classifier.yaml: {e}") from e

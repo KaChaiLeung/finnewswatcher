@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from typing import Dict, List
 import re
 
@@ -33,7 +35,7 @@ def attach_tickers(items: List[NormalizedItem], alias_index: Dict[str, str]) -> 
     compiled_patterns = []
     for alias in aliases:
         escaped = re.escape(alias)
-        pattern = r"(?<![A-Za-z0-9]){escaped}(?![A-Za-z0-9])"
+        pattern = rf"(?<![A-Za-z0-9]){escaped}(?![A-Za-z0-9])"
         compiled_patterns.append((alias, re.compile(pattern, re.IGNORECASE)))
 
     # 2) Scan each item and populate tickers
