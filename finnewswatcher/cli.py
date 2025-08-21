@@ -5,6 +5,7 @@ from typing import get_args
 import os
 import time
 from dotenv import load_dotenv
+from pathlib import Path
 
 from finnewswatcher.config import load_sources, load_watchlist, load_classifier_ruleset
 from finnewswatcher.fetchers.rss import pull_feed
@@ -17,7 +18,16 @@ from finnewswatcher.state import was_sent, mark_sent
 
 
 ALLOWED_TYPES = {t.lower() for t in get_args(SourceType)}
-load_dotenv()
+
+_dotenv_loaded = False
+for p in (Path.cwd() / ".env", Path(__file__).resolve().parents[1] / ".env"):
+    if p.exists():
+        load_dotenv(p, override=False)  # always pass an explicit path on Py 3.13
+        _dotenv_loaded = True
+        break
+
+if not os.getenv("FNW_SLACK_WEBHOOK"):
+    print("[slack] no FNW_SLACK_WEBHOOK set; skipping Slack posts")
 
 
 def parse_args():
